@@ -1,12 +1,6 @@
-from django import forms  # Импортируем модуль forms, из него возьмём класс ModelForm
+from django import forms
 
-from .models import Post  # Импортируем модель, чтобы связать с ней форму
-
-
-'''class NewPostForm(forms.ModelForm):
-    class Meta:
-        model = NewPost
-        fields = ('text', 'group')'''
+from .models import Post
 
 
 class NewPostForm(forms.ModelForm):
@@ -18,4 +12,3 @@ class NewPostForm(forms.ModelForm):
         }
 
         fields = ('group', 'text')
-

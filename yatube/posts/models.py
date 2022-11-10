@@ -32,8 +32,3 @@ class Post(models.Model):
     def __str__(self):
         return self.text
 
-
-'''class NewPost(models.Model):
-    text = models.TextField()
-    group = models.CharField(max_length=50)
-    # is_answered = models.BooleanField(default=False)'''

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}
+    Редактровать пост
+{% endblock %}
+    <main>
+      <div class="container py-5">
+        <div class="row justify-content-center">
+          <div class="col-md-8 p-5">
+            <div class="card">
+              <div class="card-header">       
+                {% if user == post.author %}
+                <div class="btn-group">
+                  <a class="btn btn-sm" href="{% url 'posts:post_edit' post_id=post.id  %}" role="button">
+                    Редактировать
+                  </a>
+                </div>
+                {% endif %}
+              </div>
+              <div class="card-body">        
+                <form method="post" action="../posts/create_post.html">
+                  <input type="hidden" name="csrfmiddlewaretoken" value="">            
+                  <div class="form-group row my-3 p-3">
+                    <!-- Текст поста -->
+              {{ post.text|linebreaks }}
+            </p>
+            <div class="d-flex justify-content-between align-items-center">
+              {% if user == post.author %}
+                <div class="btn-group">
+                  <a class="btn btn-sm text-muted" href="{% url 'posts:post_edit' post_id=post.id  %}" role="button">
+                    Редактировать
+                  </a>
+                </div>
+              {% endif %}
+              <li class="list-group-item">
+                Дата публикации: {{ post.pub_date|date:"d E Y"}}
+              </li>
+              {% if post.group %}
+                <p><a href="{% url 'posts:group_list' slug=post.group.slug %}">{{ post.group }}</a></p>
+              {% endif %}
+                    <small id="id_text-help" class="form-text text-muted">
+                      Текст нового поста
+                    </small>                  
+                  </div>            
+                  <div class="form-group row my-3 p-3">
+                    <label for="id_group">
+                      Группа                  
+                    </label>
+                    <select name="group" class="form-control" id="id_group">
+                      <option value="">---------</option>
+                      <option value="1" selected> Группа: {{ post.group }} </option>
+                    </select>
+                    <small id="id_group-help" class="form-text text-muted">
+                      Группа, к которой будет относиться пост
+                    </small>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">
+                      Добавить
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="border-top text-center py-3">
+      <p>© 2021 Copyright <span style="color:red">Ya</span>tube</p>    
+    </footer>
+  </body>
+</html>

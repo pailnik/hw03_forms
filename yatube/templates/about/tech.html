@@ -1,9 +1,10 @@
+<!-- templates/about/tech.html -->
 {% extends "base.html" %}
-{% block title %}Технологии{% endblock %}
+{% block title %}{{title_for_author}}{% endblock %}
 {% block content %}
 {% comment %} Колонки с отступом сверху и снизу {% endcomment %}
 <div class="row">
-  <h1>Вот что я умею</h1>
+  <h1>{{title_whatido}}</h1>
   {% comment %}
     Боковой блок со списком технологий 
     Займет всю ширину блока на мобильном
@@ -28,4 +29,4 @@
     <p>Текст страницы "Технологии"</p>
   </article>
 </div>
-{% endblock %}
+{% endblock %} 

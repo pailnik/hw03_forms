@@ -5,16 +5,16 @@ User = get_user_model()
 
 
 class Group(models.Model):
-    title = models.CharField(max_length=200, verbose_name='title')
-    slug = models.SlugField(max_length=150, unique=True, verbose_name='slug')
+    title = models.CharField(max_length=200, unique=True, verbose_name='title')
+    slug = models.SlugField(unique=True, verbose_name='slug')
     description = models.TextField(verbose_name='description')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
 class Post(models.Model):
-    text = models.TextField()
+    text = models.TextField(max_length=30)
     pub_date = models.DateTimeField(auto_now_add=True)
     group = models.ForeignKey(
         Group,
@@ -29,5 +29,8 @@ class Post(models.Model):
         related_name='posts'
     )
 
-    def __str__(self):
+    class Meta:
+        ordering = ('-pub_date',)
+
+    def __str__(self) -> str:
         return self.text

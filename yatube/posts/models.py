@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import TextField
 
 User = get_user_model()
 
@@ -32,5 +33,5 @@ class Post(models.Model):
     class Meta:
         ordering = ('-pub_date',)
 
-    def __str__(self) -> str:
+    def __str__(self) -> TextField(max_length=15):
         return self.text

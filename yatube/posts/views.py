@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+
 from .utilities import get_paginator
 
 from .models import Group, Post, User
@@ -20,7 +20,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = Post.objects.filter(group=group).order_by('-pub_date')
+    posts = group.posts.all()
     page_obj = get_paginator(request, posts)
     context = {
         'group': group,
@@ -32,10 +32,11 @@ def group_posts(request, slug):
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     posts = author.posts.all()
-    paginator = Paginator(posts, SORTING)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    # paginator = Paginator(posts, SORTING)
+    # page_number = request.GET.get('page')
+    page_obj = get_paginator(request, posts)
     context = {
+        'post': posts,
         'author': author,
         'page_obj': page_obj,
     }
@@ -52,18 +53,17 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
+    form = PostForm(request.POST, files=request.FILES or None)
     if request.method == 'POST':
-        form = PostForm(request.POST, files=request.FILES or None)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
             return redirect('posts:profile', request.user.username)
-    form = PostForm()
+    # form = PostForm()
     template = 'posts/create_post.html'
     context = {
         'form': form,
-        'is_edit': False,
     }
     return render(request, template, context)
 
@@ -81,10 +81,8 @@ def post_edit(request, post_id):
         return redirect('posts:post_detail', post_id)
 
     context = {
-        'title': 'Редактирование поста',
         'form': form,
         'is_edit': True,
         'post': post,
-        'groups': Group.objects.all(),
     }
     return render(request, 'posts/create_post.html', context)
